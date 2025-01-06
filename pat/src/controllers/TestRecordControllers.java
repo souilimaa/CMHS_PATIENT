@@ -1,14 +1,11 @@
 package controllers;
 
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-import application.Main;
-import controllers.DatabaseConnection;
 import models.TestRecord;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -64,6 +61,11 @@ public class TestRecordControllers {
     private TableColumn<TestRecord, Button> prescriptionColumn;
 
     private ObservableList<TestRecord> dataList = FXCollections.observableArrayList();
+   
+    
+    
+    
+   
     @FXML
     private Button profileButton, folderButton, calendarButton, menuButton, logoutButton;
     
@@ -71,7 +73,6 @@ public class TestRecordControllers {
     private StackPane rootPane; 
 
     private Stage stage;
-    
     @FXML
     private void handleLoginButtonAction(ActionEvent event) {
         // Validate login logic here
@@ -85,6 +86,10 @@ public class TestRecordControllers {
         }
     }
    
+    @FXML
+    private void handleHomeButtonAction() {
+        switchToScene("dashboard.fxml");
+    }
    
     @FXML
     private void handleProfileButtonAction() {
@@ -93,6 +98,7 @@ public class TestRecordControllers {
 
     @FXML
     private void handleMenuButtonAction () {
+    	System.out.println("gjhgjhgjhg");
         switchToScene("dashboard.fxml");
     }
     @FXML
@@ -130,7 +136,7 @@ public class TestRecordControllers {
     	profileButton.setOnMouseClicked(event -> handleProfileButtonAction());
         folderButton.setOnMouseClicked(event -> handleFolderButtonAction());
         calendarButton.setOnMouseClicked(event -> handleCalendarButtonAction());
-        menuButton.setOnMouseClicked(event -> handleMenuButtonAction());
+        menuButton.setOnMouseClicked(event -> handleHomeButtonAction());
         logoutButton.setOnMouseClicked(event -> handleLogoutButtonAction());
         
 
@@ -139,7 +145,6 @@ public class TestRecordControllers {
     	tableView.getStylesheets().add(getClass().getResource("/views/style.css").toExternalForm());
 
 
-        // Configurer les colonnes du TableView
         testNameColumn.setCellValueFactory(new PropertyValueFactory<>("testName"));
         testResultsColumn.setCellValueFactory(new PropertyValueFactory<>("testResults"));
         testDateColumn.setCellValueFactory(new PropertyValueFactory<>("testDate"));
@@ -169,7 +174,7 @@ public class TestRecordControllers {
     
     private void adjustTableHeight() {
         tableView.setFixedCellSize(25); // Hauteur d'une cellule
-        int maxRows = 7;
+        int maxRows = 10;
         tableView.prefHeightProperty().bind(
             Bindings.min(
                 tableView.fixedCellSizeProperty().multiply(Bindings.size(tableView.getItems()).add(1.01)),
@@ -189,10 +194,8 @@ public class TestRecordControllers {
 
 
     private void adjustColumnWidths() {
-        // Appliquer une politique de redimensionnement uniforme
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Ajuster la largeur relative de chaque colonne
         testNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 20% de la largeur totale
         testResultsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15%
         testDateColumn.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 20%
